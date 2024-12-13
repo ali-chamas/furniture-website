@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\FavouritesController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\AdminMiddleware;
@@ -34,4 +37,34 @@ Route::middleware([JwtMiddleware::class, AdminMiddleware::class])->group(functio
     Route::post('/products', [ProductController::class, 'create']); 
     Route::post('/products/{id}', [ProductController::class, 'update']); 
     Route::delete('/products/{id}', [ProductController::class, 'delete']); 
+});
+
+//ORDERS
+
+Route::middleware([JwtMiddleware::class])->group(function () {
+    Route::get('orders', [OrderController::class, 'getUserOrders']);
+    Route::post('orders/{id}/cancel', [OrderController::class, 'cancelOrder']);
+});
+
+Route::middleware([JwtMiddleware::class, AdminMiddleware::class])->group(function () {
+    Route::get('admin/orders', [OrderController::class, 'getAllOrders']);
+    Route::post('admin/orders/{id}/status', [OrderController::class, 'updateOrderStatus']);
+});
+
+//FAVOURITES
+Route::middleware([JwtMiddleware::class])->group(function () {
+    Route::post('favorites/add', [FavouritesController::class, 'addToFavorites']);
+    Route::delete('favorites/remove', [FavouritesController::class, 'removeFromFavorites']);
+    Route::get('favorites', [FavouritesController::class, 'getFavorites']);
+
+
+   
+});
+
+//CART
+Route::middleware([JwtMiddleware::class])->group(function () {
+    Route::post('cart/add', [CartController::class, 'addToCart']);
+    Route::delete('cart/remove', [CartController::class, 'removeFromCart']);
+    Route::get('cart', [CartController::class, 'viewCart']);
+    Route::post('cart/checkout', [CartController::class, 'checkout']);
 });
