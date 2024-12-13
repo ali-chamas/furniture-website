@@ -59,10 +59,16 @@ class AuthController extends Controller
     // Login an existing user and return a JWT token
     public function login(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required',
         ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'error' => $validator->errors()
+            ], 422);
+        }
 
         $credentials = $request->only('email', 'password');
 
