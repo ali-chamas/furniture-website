@@ -89,11 +89,11 @@ class OrderController extends Controller
             return response()->json(['message' => 'Order not found.'], 404);
         }
 
-        if ($order->status_id != 1) { // Only pending orders can be canceled
+        if ($order->status_id != 1) { 
             return response()->json(['message' => 'Order cannot be canceled.'], 400);
         }
 
-        $order->update(['status_id' => 3]); // 3 = Canceled
+        $order->update(['status_id' => 3]);
 
         return response()->json(['message' => 'Order canceled successfully.']);
     }

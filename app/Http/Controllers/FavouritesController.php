@@ -48,7 +48,7 @@ class FavouritesController extends Controller
     {
         $user = auth()->user();
 
-        $favorites = $user->favorites()->with('product')->get();
+        $favorites = $user->favorites()->with('product.images')->get();
 
         return response()->json(['favorites' => $favorites]);
     }

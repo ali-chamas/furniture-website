@@ -48,7 +48,7 @@ class CartController extends Controller
     {
         $user = auth()->user();
 
-        $cartItems = $user->cart()->with('product')->get();
+        $cartItems = $user->cart()->with('product.images')->get();
 
         return response()->json(['cart' => $cartItems]);
     }

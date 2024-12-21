@@ -24,7 +24,7 @@ Route::middleware([JwtMiddleware::class])->group(function () {
 });
 
 Route::middleware([JwtMiddleware::class,AdminMiddleware::class])->group(function () {
-    Route::get('/users', [UserController::class, 'getUsers']);
+    Route::get('/admin/users', [UserController::class, 'getUsers']);
 });
 
 //PRODUCTS
@@ -64,7 +64,13 @@ Route::middleware([JwtMiddleware::class])->group(function () {
 //CART
 Route::middleware([JwtMiddleware::class])->group(function () {
     Route::post('cart/add', [CartController::class, 'addToCart']);
-    Route::delete('cart/remove', [CartController::class, 'removeFromCart']);
+    Route::post('cart/remove', [CartController::class, 'removeFromCart']);
     Route::get('cart', [CartController::class, 'viewCart']);
     Route::post('cart/checkout', [CartController::class, 'checkout']);
+});
+
+//PRODUCTIMAGE
+Route::middleware([JwtMiddleware::class, AdminMiddleware::class])->group(function () {
+    Route::post('products/{productId}/images', [ProductImageController::class, 'addImages']);
+    Route::delete('products/{productId}/images/{imageId}', [ProductImageController::class, 'deleteImage']);
 });
